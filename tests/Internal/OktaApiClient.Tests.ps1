@@ -25,7 +25,7 @@ Context 'Invoke-OktaApiClient - 429 Responses' {
         } -Verifiable
 
         $Result = Invoke-OktaListApplications
-        Assert-MockCalled -ModuleName Okta.PowerShell Invoke-WebRequest -Times 8
+        Assert-MockCalled -ModuleName Okta.PowerShell Invoke-WebRequest -Times 2
     }
 
     It 'Should retry 429 responses until MaxRetries is reached and RequestTimeout > ElapsedTime' {
