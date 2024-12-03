@@ -4,6 +4,9 @@ on:
     branches-ignore:
       - 'main'
       - 'master'
+  pull_request:
+    types: 
+     - opened
 
 jobs:
   pester-test:
