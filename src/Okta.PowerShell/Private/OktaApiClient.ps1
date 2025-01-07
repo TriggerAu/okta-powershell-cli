@@ -212,6 +212,11 @@ function Invoke-OktaApiClient {
                     # and messes up the callers that assume they are getting a response object and not an array of headers
                     # and a response if there is a retry
                     AddRetryHeaders -Headers $HeaderParameters -RequestId $RequestId -RetryCount $RetryCount | out-null
+                    if($Configuration["RetryWarningMessage"])
+                    {
+                        # We use a Warning so it doesnt add to the pipeline and get ingested by the return function
+                        Write-Warning "Hit Rate limit: Retrying request after $WaitInMilliseconds milliseconds"
+                    }
                     Write-Verbose "Hit Rate limit: Retrying request after $WaitInMilliseconds milliseconds"
                     Start-Sleep -Milliseconds $WaitInMilliseconds
                 }
