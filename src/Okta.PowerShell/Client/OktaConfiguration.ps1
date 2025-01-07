@@ -68,6 +68,10 @@ function Get-OktaConfiguration {
         $Configuration["RequestTimeout"] = $null
     }
 
+    if (!$Configuration.containsKey("RetryWarningMessage")) {
+        $Configuration["RetryWarningMessage"] = $false
+    }
+
     Return $Configuration
 
 }
@@ -120,6 +124,9 @@ Specify the number of times a request should be retried
 .PARAMETER RequestTimeout
 Specify the timeout in milliseconds for a request
 
+.PARAMETER RetryWarningMessage
+Output the wait period using Write-Warning if there is a retry hit so the users knows the script is not stalled
+
 .PARAMETER PassThru
 Return an object of the Configuration
 
@@ -144,6 +151,7 @@ function Set-OktaConfiguration {
         [System.Object]$Proxy,
         [int]$MaxRetries,
         [int]$RequestTimeout,
+        [bool]$RetryWarningMessage,
         [switch]$PassThru
     )
 
@@ -201,6 +209,10 @@ function Set-OktaConfiguration {
 
         If ($PSBoundParameters.ContainsKey("RequestTimeout")) {
             $Script:Configuration['RequestTimeout'] = $RequestTimeout
+        }
+
+        If ($PSBoundParameters.ContainsKey("RetryWarningMessage")) {
+            $Script:Configuration['RetryWarningMessage'] = $RetryWarningMessage
         }
 
         If ($PassThru.IsPresent) {

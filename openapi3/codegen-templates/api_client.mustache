@@ -217,6 +217,11 @@ function Invoke-{{{apiNamePrefix}}}ApiClient {
                     $RetryCount = $RetryCount + 1
                     $RequestId = $Headers['X-Okta-Request-Id'][0]
                     AddRetryHeaders -Headers $HeaderParameters -RequestId $RequestId -RetryCount $RetryCount
+                    if($Configuration["RetryWarningMessage"])
+                    {
+                        # We use a Warning so it doesnt add to the pipeline and get ingested by the return function
+                        Write-Warning "Hit Rate limit: Retrying request after $WaitInMilliseconds milliseconds"
+                    }
                     Start-Sleep -Milliseconds $WaitInMilliseconds
                 }
                 else {
